@@ -77,16 +77,35 @@ Urchin will return something like this.
     Test case: create_bob
       Passed: /home/bob exists
       Passed: bob cannot destroy the system
-    
+    Test case passed
+      2 tests passed
+      0 tests failed
+      0 tests errored
+
     Test case: ssh_to_localhost
       Error: can ssh to joe
     ---
     ssh: connect to host localhost port 22: Connection refused
     ---
       Passed: cannot ssh to root
+    Test case failed 
+      0 tests passed
+      1 test errored
 
-    Test case: go_to_local_webserver
+    Test Case: go_to_local_webserver
+    ===
+    sh: /etc/init.g/apache2: No such file or directory
+    ===
       Failed: can access localhost:80/index.html
+    Test case failed 
+      0 tests passed
+      1 test failed
+
+Note that stderr is hidden if an error inside of an assertions
+is caught, like in "bob can destroy the system".
+Otherwise, stderr is printed as it appears, inside of a pair
+of `---`s for errors within assertions and inside of a pair of
+`===`s for errors outside assertions but within test cases.
 
 You can also run any of the test cases individually with
 something like this. (They're just shell scripts.)
