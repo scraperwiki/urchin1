@@ -90,6 +90,7 @@ Urchin will return something like this.
       Passed: cannot ssh to root
     Test case failed 
       0 tests passed
+      0 tests failed
       1 test errored
 
     Test Case: go_to_local_webserver
@@ -100,6 +101,7 @@ Urchin will return something like this.
     Test case failed 
       0 tests passed
       1 test failed
+      0 tests errored
 
 Note that stderr is hidden if an error inside of an assertions
 is caught, like in "bob can destroy the system".
