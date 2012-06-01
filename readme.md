@@ -89,8 +89,9 @@ Urchin will return something like this.
       Failed: can access localhost:80/index.html
 
 You can also run any of the test cases individually with
-something like this.
+something like this. (They're just shell scripts.)
 
     sh tests/ssh_to_localhost
 
-(They're just shell scripts.)
+In this situation, the output will only contain the
+test case that was called.
