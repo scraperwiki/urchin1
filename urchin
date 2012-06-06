@@ -14,10 +14,6 @@
 #    `assert 'error message' [ expression ]`
 #
 
-
-tests_passing=0
-tests_total=0
-
 assert() {
   # Check whether a assertion value is true, then increment counts.
   # Increment the total count first in case of error.
@@ -35,10 +31,15 @@ assert() {
 }
 
 report_test_results() {
+  tests_passing=$1
+  tests_total=$2
+  tests_error=$3
+
   echo -----------------------
   echo Ran $tests_total tests
   echo \ -\ $tests_passing successes
   echo \ -\ $(($tests_total - $tests_passing)) failures
+  echo \ -\ $tests_error errors
   echo -----------------------
 
   [ $tests_total -eq $tests_passing ] || return 1
@@ -65,3 +66,57 @@ runtests() {
 #  teardown
 #  exit $status
 #}
+
+# Main stuff
+
+test_dir=tests
+action=testcase
+
+# Error status
+status=0
+
+if [ action = 'testcase' ]; then
+
+  # Count tests
+  tests_passing=0
+  tests_total=0
+
+  # Go
+  setup
+  runtests
+  report_test_results $tests_passing $tests_total $tests_error || status=1
+  teardown
+
+elif [ action = 'testsuite' ]; then
+
+  testsuite_tests_passing=0
+  testsuite_tests_total=0
+
+  for file in $test_dir/*; do
+    (
+      . "$file"
+
+      tests_passing=0
+      tests_total=0
+      tests_error=0
+
+      setup
+      runtests
+      report_test_results $tests_passing $tests_total $tests_error
+      teardown
+
+      # Pass the success rate back
+      exit "$tests_passing,$tests_total,$tests_error"
+    )
+    success_rate=$?
+
+    testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
+    testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
+    testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
+  done
+
+  report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1
+
+fi
+
+exit $status

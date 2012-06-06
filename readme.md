@@ -101,7 +101,7 @@ Urchin will return something like this.
       0 tests failed
       1 test errored
 
-    Test Case: go_to_local_webserver
+    Test case: go_to_local_webserver
     ===
     sh: /etc/init.g/apache2: No such file or directory
     ===
@@ -110,6 +110,11 @@ Urchin will return something like this.
       0 tests passed
       1 test failed
       0 tests errored
+
+    Test suite
+      2 tests passed
+      1 test failed
+      1 tests errored
 
 Note that stderr is hidden if an error inside of an assertions
 is caught, like in "bob can destroy the system".
