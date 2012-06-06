@@ -1,0 +1,67 @@
+#!/bin/sh
+
+# A skeleton for testing in shell
+# Thomas Levine, ScraperWiki
+#
+# How to use
+# --------
+# Define a runtests function. Optionally define setup and teardown functions.
+# The runtests function will contain the tests that you want to run. setup will
+# run before that and teardown will be run after.
+#
+# Assertions are of this format:
+#
+#    `assert 'error message' [ expression ]`
+#
+
+
+tests_passing=0
+tests_total=0
+
+assert() {
+  # Check whether a assertion value is true, then increment counts.
+  # Increment the total count first in case of error.
+  msg=$1
+  shift 1
+  assertion=$*
+  tests_total=$(($tests_total+1))
+  if `$assertion` && tests_passing=$(($tests_passing+1)); then
+    echo "Passed: $msg"
+    return 0
+  else
+    echo "Failed: $msg"
+    return 1
+  fi
+}
+
+report_test_results() {
+  echo -----------------------
+  echo Ran $tests_total tests
+  echo \ -\ $tests_passing successes
+  echo \ -\ $(($tests_total - $tests_passing)) failures
+  echo -----------------------
+
+  [ $tests_total -eq $tests_passing ] || return 1
+}
+
+# Define these functions if you please
+setup()  {
+  echo No setup function defined
+}
+teardown()  {
+  echo No teardown function defined
+}
+
+# Define your tests in here
+runtests() {
+  echo You need to define the runtests function.
+  exit 1
+}
+
+#urchin() {
+#  setup || exit 1
+#  runtests
+#  (report_test_results && status=0) || status=1
+#  teardown
+#  exit $status
+#}
