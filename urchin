@@ -80,6 +80,7 @@ if [ action = 'testcase' ]; then
   # Count tests
   tests_passing=0
   tests_total=0
+  tests_error=0
 
   # Go
   setup
@@ -91,6 +92,7 @@ elif [ action = 'testsuite' ]; then
 
   testsuite_tests_passing=0
   testsuite_tests_total=0
+  testsuite_tests_error=0
 
   for file in $test_dir/*; do
     (
