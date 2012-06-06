@@ -21,12 +21,17 @@ assert() {
   shift 1
   assertion=$*
   tests_total=$(($tests_total+1))
-  if `$assertion` && tests_passing=$(($tests_passing+1)); then
+
+  passed=`$assertion` ||
+  ( tests_error=$(($tests_error+1)) && errored=true )
+
+  if $errored; then
+    echo "Errored: $msg"
+  elif $passed; then
+    tests_passing=$(($tests_passing+1))
     echo "Passed: $msg"
-    return 0
   else
     echo "Failed: $msg"
-    return 1
   fi
 }
 
@@ -67,58 +72,90 @@ runtests() {
 #  exit $status
 #}
 
-# Main stuff
 
+
+
+
+
+
+
+# Main stuff
 test_dir=tests
-action=testcase
+action=
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -c) action=testcase;;
+        -s) action=testsuite;;
+        --) shift; break;;
+        -*) echo >&2 \
+            "usage: $0 [-v] [-f file] [file ...]"
+            exit 1;;
+        *)  break;;
+    esac
+    shift
+done
+
+# "$@" contains only names of test suites (directories)
+# or test cases (files)
 
 # Error status
 status=0
 
-if [ action = 'testcase' ]; then
+for test_thing in "$@"; do
+  if [ action = 'testcase' ]; then
 
-  # Count tests
-  tests_passing=0
-  tests_total=0
-  tests_error=0
-
-  # Go
-  setup
-  runtests
-  report_test_results $tests_passing $tests_total $tests_error || status=1
-  teardown
-
-elif [ action = 'testsuite' ]; then
-
-  testsuite_tests_passing=0
-  testsuite_tests_total=0
-  testsuite_tests_error=0
-
-  for file in $test_dir/*; do
     (
-      . "$file"
+      # Error status
+      local_status=0
 
+      # Count tests
       tests_passing=0
       tests_total=0
       tests_error=0
-
+ 
+      # Go
       setup
       runtests
-      report_test_results $tests_passing $tests_total $tests_error
+      report_test_results $tests_passing $tests_total $tests_error || local_status=1
       teardown
 
-      # Pass the success rate back
-      exit "$tests_passing,$tests_total,$tests_error"
+      exit $local_status
     )
-    success_rate=$?
+    [ "$?" = "0" ] || status=1
 
-    testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
-    testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
-    testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
-  done
+  elif [ action = 'testsuite' ]; then
 
-  report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1
+    testsuite_tests_passing=0
+    testsuite_tests_total=0
+    testsuite_tests_error=0
 
-fi
+    for file in $test_thing/*; do
+      (
+        . "$file"
+
+        tests_passing=0
+        tests_total=0
+        tests_error=0
+
+        setup
+        runtests
+        report_test_results $tests_passing $tests_total $tests_error
+        teardown
+
+        # Pass the success rate back
+        exit "$tests_passing,$tests_total,$tests_error"
+      )
+      success_rate=$?
+
+      testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
+      testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
+      testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
+    done
+
+    report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1
+
+  fi
 
 exit $status
