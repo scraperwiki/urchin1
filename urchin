@@ -64,22 +64,12 @@ runtests() {
   exit 1
 }
 
-#urchin() {
-#  setup || exit 1
-#  runtests
-#  (report_test_results && status=0) || status=1
-#  teardown
-#  exit $status
-#}
 
+# ----------------------------------------
+# Main stuff starts here.
+# ----------------------------------------
 
-
-
-
-
-
-
-# Main stuff
+# Parameters
 test_dir=tests
 action=
 
@@ -103,10 +93,17 @@ done
 # Error status
 status=0
 
+# Run tests
 for test_thing in "$@"; do
   if [ action = 'testcase' ]; then
+    # Check that it's a file
+    [ -f "$test_thing" ] ||
+      echo "$test_thing is not a file" && exit 1
 
     (
+      # Import the test case
+      . "$test_thing"
+
       # Error status
       local_status=0
 
@@ -126,12 +123,18 @@ for test_thing in "$@"; do
     [ "$?" = "0" ] || status=1
 
   elif [ action = 'testsuite' ]; then
+    # Check that it's a directory
+    [ -d "$test_thing" ] ||
+      echo "$test_thing is not a directory" && exit 1
 
     testsuite_tests_passing=0
     testsuite_tests_total=0
     testsuite_tests_error=0
 
-    for file in $test_thing/*; do
+    for file in $test_thing/* $test_thing/**/*; do
+      # Skip non-files
+      [ -f $file ] || continue
+
       (
         . "$file"
 
@@ -157,5 +160,7 @@ for test_thing in "$@"; do
     report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1
 
   fi
+  shift
+done
 
 exit $status
