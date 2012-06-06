@@ -51,7 +51,11 @@ These are run before and after the `runtests` function, respectively.
 Call urchin at the bottom of your script (after all those function
 definitions) like so.
 
-    urchin case
+    urchin -c
+
+You can also call this on a file, outside of the script.
+
+    urchin -c some_test_case_file
 
 ## Test suites
 
@@ -70,7 +74,11 @@ set up a project like this
 
 and then go to the root of the project (`./`) and run this.
 
-    urchin suite
+    urchin -s
+
+or, to be more explicit
+
+    urchin -s tests 
 
 Urchin will return something like this.
 
