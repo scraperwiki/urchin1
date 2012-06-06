@@ -1,11 +1,11 @@
 Urchin: A Skeleton for Shell Tests
 =====
 
-### Install
+## Install
 
 ??
 
-### Overview
+## Overview
 
 Urchin lets you write *assertions* to make *test cases*, which are
 organized into *test suites*.
@@ -14,7 +14,7 @@ A test case is a file, and a test suite is a directory of test cases.
 You can run a lone test case, but if you have several in one directory,
 you can run them all automatically.
 
-### Assertions
+## Assertions
 
 An assertion looks like this.
 
@@ -25,7 +25,7 @@ assertion ("/home/bob exists") and something that evaluates to
 `true` or `false`. Urchin reports whether the assertion passed
 (`true`), failed (`false`) or raised an error.
 
-### Test cases
+## Test cases
 
 A test case is a file that defines a `runtest` function. For example
 
@@ -53,7 +53,7 @@ definitions) like so.
 
     urchin case
 
-### Test suites
+## Test suites
 
 Make a directory called `test` or `tests`, put a bunch of test cases
 in there, and you can automatically run them all with urchin. You might
