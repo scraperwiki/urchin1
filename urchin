@@ -148,19 +148,18 @@ for test_thing in "$@"; do
             report_test_results $tests_passing $tests_total $tests_error
             teardown
  
-            # Pass the success rate back
-            exit "$tests_passing,$tests_total,$tests_error"
+            export tests_passing=$tests_passing
+            export tests_total=$tests_total
+            export tests_error=$tests_error
           )
-          success_rate=$?
  
-          testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
-          testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
-          testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
+          testsuite_tests_passing=$(($testsuite_tests_passing+$tests_passing))
+          testsuite_tests_total=$(($testsuite_tests_total+$tests_total))
+          testsuite_tests_error=$(($testsuite_tests_error+$tests_error))
         done
  
         report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1;;
     *)
-      echo $action;;
   esac
   shift
 done
