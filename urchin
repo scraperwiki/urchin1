@@ -126,7 +126,7 @@ for test_thing in "$@"; do
     testsuite)
         # Check that it's a directory
         [ -d "$test_thing" ] ||
-          echo "$test_thing is not a directory" && exit 1
+          ( echo "$test_thing is not a directory" && exit 1 )
  
         testsuite_tests_passing=0
         testsuite_tests_total=0
