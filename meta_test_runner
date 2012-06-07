@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./urchin -s meta_test_suite

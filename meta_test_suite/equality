@@ -1,0 +1,7 @@
+#!/bin/sh
+
+runtests() {
+  assert '[ "3" = "3" ]' [ "3" = "3" ]
+  assert '[ "3" != "three" ]' [ "3" != "three" ]
+  assert '! [ "3" = "4" ]' ! [ "3" = "4" ]
+}
