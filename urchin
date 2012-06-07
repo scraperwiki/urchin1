@@ -136,6 +136,7 @@ for test_thing in "$@"; do
           # Skip non-files
           [ -f $file ] || continue
  
+          fingerprint=$RANDOM
           (
             . "$file"
  
@@ -148,14 +149,13 @@ for test_thing in "$@"; do
             report_test_results $tests_passing $tests_total $tests_error
             teardown
  
-            export tests_passing=$tests_passing
-            export tests_total=$tests_total
-            export tests_error=$tests_error
+            # Pass the success rate back
+            echo "$tests_passing,$tests_total,$tests_error" > /tmp/urchin-$fingerprint
           )
- 
-          testsuite_tests_passing=$(($testsuite_tests_passing+$tests_passing))
-          testsuite_tests_total=$(($testsuite_tests_total+$tests_total))
-          testsuite_tests_error=$(($testsuite_tests_error+$tests_error))
+          counts="`cat /tmp/urchin-$fingerprint`"
+          testsuite_tests_passing=$(($testsuite_tests_passing+`echo $counts|cut -d ',' -f 1`))
+          testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
+          testsuite_tests_error=$(($testsuite_tests_error+`echo $counts|cut -d ',' -f 3`))
         done
  
         report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1;;
