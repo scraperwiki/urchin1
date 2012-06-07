@@ -129,3 +129,8 @@ something like this. (They're just shell scripts.)
 
 In this situation, the output will only contain the
 test case that was called.
+
+## Running tests
+
+There are meta tests in meta_test_suite and meta_test_runner.
+Run them with `./meta_test_runner`.
