@@ -1,3 +1,4 @@
 #!/bin/sh
 
+./urchin -c meta_test_suite/equality
 ./urchin -s meta_test_suite

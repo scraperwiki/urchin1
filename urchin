@@ -95,71 +95,73 @@ status=0
 
 # Run tests
 for test_thing in "$@"; do
-  if [ action = 'testcase' ]; then
-    # Check that it's a file
-    [ -f "$test_thing" ] ||
-      echo "$test_thing is not a file" && exit 1
-
-    (
-      # Import the test case
-      . "$test_thing"
-
-      # Error status
-      local_status=0
-
-      # Count tests
-      tests_passing=0
-      tests_total=0
-      tests_error=0
+  case $action in
+    testcase)
+        # Check that it's a file
+        [ -f "$test_thing" ] ||
+          ( echo "$test_thing is not a file" && exit 1 )
  
-      # Go
-      setup
-      runtests
-      report_test_results $tests_passing $tests_total $tests_error || local_status=1
-      teardown
-
-      exit $local_status
-    )
-    [ "$?" = "0" ] || status=1
-
-  elif [ action = 'testsuite' ]; then
-    # Check that it's a directory
-    [ -d "$test_thing" ] ||
-      echo "$test_thing is not a directory" && exit 1
-
-    testsuite_tests_passing=0
-    testsuite_tests_total=0
-    testsuite_tests_error=0
-
-    for file in $test_thing/* $test_thing/**/*; do
-      # Skip non-files
-      [ -f $file ] || continue
-
-      (
-        . "$file"
-
-        tests_passing=0
-        tests_total=0
-        tests_error=0
-
-        setup
-        runtests
-        report_test_results $tests_passing $tests_total $tests_error
-        teardown
-
-        # Pass the success rate back
-        exit "$tests_passing,$tests_total,$tests_error"
-      )
-      success_rate=$?
-
-      testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
-      testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
-      testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
-    done
-
-    report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1
-
-  fi
+        (
+          # Import the test case
+          . "$test_thing"
+ 
+          # Error status
+          local_status=0
+ 
+          # Count tests
+          tests_passing=0
+          tests_total=0
+          tests_error=0
+  
+          # Go
+          setup
+          runtests
+          report_test_results $tests_passing $tests_total $tests_error || local_status=1
+          teardown
+ 
+          exit $local_status
+        )
+        [ "$?" = "0" ] || status=1;;
+ 
+    testsuite)
+        # Check that it's a directory
+        [ -d "$test_thing" ] ||
+          echo "$test_thing is not a directory" && exit 1
+ 
+        testsuite_tests_passing=0
+        testsuite_tests_total=0
+        testsuite_tests_error=0
+ 
+        for file in $test_thing/* $test_thing/**/*; do
+          # Skip non-files
+          [ -f $file ] || continue
+ 
+          (
+            . "$file"
+ 
+            tests_passing=0
+            tests_total=0
+            tests_error=0
+ 
+            setup
+            runtests
+            report_test_results $tests_passing $tests_total $tests_error
+            teardown
+ 
+            # Pass the success rate back
+            exit "$tests_passing,$tests_total,$tests_error"
+          )
+          success_rate=$?
+ 
+          testsuite_tests_passing=$(($testsuite_tests_passing+`echo $success_rate|cut -d ',' -f 1`))
+          testsuite_tests_total=$(($testsuite_tests_total+`echo $success_rate|cut -d ',' -f 2`))
+          testsuite_tests_error=$(($testsuite_tests_error+`echo $success_rate|cut -d ',' -f 3`))
+        done
+ 
+        report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1;;
+    *)
+      echo $action;;
+  esac
   shift
 done
 
