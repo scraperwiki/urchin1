@@ -22,12 +22,9 @@ assert() {
   assertion=$*
   tests_total=$(($tests_total+1))
 
-  passed=`$assertion` ||
-  ( tests_error=$(($tests_error+1)) && errored=true )
+  (`$assertion` && passed=true) || passed=false
 
-  if $errored; then
-    echo "Errored: $msg"
-  elif $passed; then
+  if $passed; then
     tests_passing=$(($tests_passing+1))
     echo "Passed: $msg"
   else
@@ -38,13 +35,11 @@ assert() {
 report_test_results() {
   tests_passing=$1
   tests_total=$2
-  tests_error=$3
 
   echo -----------------------
   echo Ran $tests_total tests
   echo \ -\ $tests_passing successes
   echo \ -\ $(($tests_total - $tests_passing)) failures
-  echo \ -\ $tests_error errors
   echo -----------------------
 
   [ $tests_total -eq $tests_passing ] || return 1
@@ -116,7 +111,7 @@ for test_thing in "$@"; do
           # Go
           setup
           runtests
-          report_test_results $tests_passing $tests_total $tests_error || local_status=1
+          report_test_results $tests_passing $tests_total || local_status=1
           teardown
  
           exit $local_status
@@ -146,19 +141,18 @@ for test_thing in "$@"; do
  
             setup
             runtests
-            report_test_results $tests_passing $tests_total $tests_error
+            report_test_results $tests_passing $tests_total
             teardown
  
             # Pass the success rate back
-            echo "$tests_passing,$tests_total,$tests_error" > /tmp/urchin-$fingerprint
+            echo "$tests_passing,$tests_total" > /tmp/urchin-$fingerprint
           )
           counts="`cat /tmp/urchin-$fingerprint`"
           testsuite_tests_passing=$(($testsuite_tests_passing+`echo $counts|cut -d ',' -f 1`))
           testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
-          testsuite_tests_error=$(($testsuite_tests_error+`echo $counts|cut -d ',' -f 3`))
         done
  
-        report_test_results $testsuite_tests_passing $testsuite_tests_total $testsuite_tests_error || status=1;;
+        report_test_results $testsuite_tests_passing $testsuite_tests_total || status=1;;
     *)
   esac
   shift
