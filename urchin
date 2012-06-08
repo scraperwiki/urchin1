@@ -14,6 +14,9 @@
 #    `assert 'error message' [ expression ]`
 #
 
+H1='==========================================='
+H2='-------------------------------------------'
+
 assert() {
   # Check whether a assertion value is true, then increment counts.
   # Increment the total count first in case of error.
@@ -38,11 +41,9 @@ report_test_results() {
   tests_passing=$1
   tests_total=$2
 
-  echo -----------------------
   echo Ran $tests_total tests
   echo \ -\ $tests_passing successes
   echo \ -\ $(($tests_total - $tests_passing)) failures
-  echo -----------------------
 
   [ $tests_total -eq $tests_passing ] || return 1
 }
@@ -91,6 +92,8 @@ done
 status=0
 
 # Run tests
+echo
+echo
 for test_thing in "$@"; do
   case $action in
     testcase)
@@ -98,6 +101,9 @@ for test_thing in "$@"; do
         [ -f "$test_thing" ] ||
           ( echo "$test_thing is not a file" && exit 1 )
  
+        echo $H2
+        echo Test Case: $test_thing
+        echo $H2
         (
           # Import the test case
           . "$test_thing"
@@ -112,19 +118,26 @@ for test_thing in "$@"; do
   
           # Go
           setup
+          echo
           runtests
+          echo
           report_test_results $tests_passing $tests_total || local_status=1
+          echo
           teardown
  
           exit $local_status
         )
-        [ "$?" = "0" ] || status=1;;
+        [ "$?" = "0" ] || status=1; echo $H2;;
  
     testsuite)
         # Check that it's a directory
         [ -d "$test_thing" ] ||
           ( echo "$test_thing is not a directory" && exit 1 )
  
+        echo $H1
+        echo Test Suite: $test_thing
+        echo $H1
+
         testsuite_tests_passing=0
         testsuite_tests_total=0
         testsuite_tests_error=0
@@ -134,6 +147,9 @@ for test_thing in "$@"; do
           [ -f $file ] || continue
  
           fingerprint=$RANDOM
+
+          echo Test Case: $file
+          echo $H2
           (
             . "$file"
  
@@ -142,9 +158,13 @@ for test_thing in "$@"; do
             tests_error=0
  
             setup
+            echo
             runtests
+            echo
             report_test_results $tests_passing $tests_total
+            echo
             teardown
+            echo $H2
  
             # Pass the success rate back
             echo "$tests_passing,$tests_total" > /tmp/urchin-$fingerprint
@@ -154,7 +174,8 @@ for test_thing in "$@"; do
           testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
         done
  
-        report_test_results $testsuite_tests_passing $testsuite_tests_total || status=1;;
+        echo -n Test Suite Totals:\ 
+        report_test_results $testsuite_tests_passing $testsuite_tests_total || status=1; echo $H1;;
     *)
   esac
   shift
