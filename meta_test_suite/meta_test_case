@@ -4,8 +4,8 @@ runtests() {
   # True
   assert '[ "3" = "3" ]' [ "3" = "3" ]
   assert '[ "3" != "three" ]' [ "3" != "three" ]
-  assert '[ -e urchin ]' [ -e urchin ]
-  assert '( ! rmdir / )' '( ! rmdir / )'
+  assert 'The urchin script exists.' [ -e urchin ]
+  assert '' '! rmdir /'
 
   # Errors
   rmdir /
