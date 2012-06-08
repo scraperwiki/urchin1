@@ -22,7 +22,12 @@ assert() {
   assertion=$*
   tests_total=$(($tests_total+1))
 
-  (`$assertion` && passed=true) || passed=false
+  output=$((`$assertion`) 2>&1)
+  if [ "$?" = 0 ]; then
+    passed=true
+  else
+    passed=false
+  fi
 
   if $passed; then
     tests_passing=$(($tests_passing+1))
@@ -30,6 +35,8 @@ assert() {
   else
     echo "Failed: $msg"
   fi
+
+  [ "$output" = '' ] || echo $output|sed 's/^/  /'
 }
 
 report_test_results() {

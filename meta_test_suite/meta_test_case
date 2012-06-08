@@ -5,12 +5,16 @@ runtests() {
   assert '[ "3" = "3" ]' [ "3" = "3" ]
   assert '[ "3" != "three" ]' [ "3" != "three" ]
   assert '[ -e urchin ]' [ -e urchin ]
-# assert '( ! rmdir / )' ( ! rmdir / )
+  assert '( ! rmdir / )' '( ! rmdir / )'
+
+  # Errors
+  rmdir /
 
   # False
   assert '[ "3" = "4" ]' [ "3" = "4" ]
   assert '[ "three" != "three" ]' [ "three" != "three" ]
   assert '[ -e not_a_file ]' [ -e not_a_file ]
+  assert 'rmdir /' 'rmdir /'
 
   # Error
 # assert '( rmdir / )' ( rmdir / )
