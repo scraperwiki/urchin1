@@ -89,39 +89,25 @@ messy for now, and they'll be before the (Passed|Failed) line.
     Test case passed
       2 tests passed
       0 tests failed
-      0 tests errored
 
     Test case: ssh_to_localhost
       Error: can ssh to joe
-    ---
     ssh: connect to host localhost port 22: Connection refused
-    ---
       Passed: cannot ssh to root
     Test case failed 
       0 tests passed
-      0 tests failed
-      1 test errored
+      1 tests failed
 
     Test case: go_to_local_webserver
-    ===
     sh: /etc/init.g/apache2: No such file or directory
-    ===
       Failed: can access localhost:80/index.html
     Test case failed 
       0 tests passed
       1 test failed
-      0 tests errored
 
     Test suite
       2 tests passed
-      1 test failed
-      1 tests errored
-
-Note that stderr is hidden if an error inside of an assertions
-is caught, like in "bob can destroy the system".
-Otherwise, stderr is printed as it appears, inside of a pair
-of `---`s for errors within assertions and inside of a pair of
-`===`s for errors outside assertions but within test cases.
+      2 test failed
 
 You can also run any of the test cases individually with
 something like this. (They're just shell scripts.)
