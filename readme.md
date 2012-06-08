@@ -78,11 +78,7 @@ set up a project like this
 
 and then go to the root of the project (`./`) and run this.
 
-    urchin -s
-
-or, to be more explicit
-
-    urchin -s tests 
+    urchin -s ./tests 
 
 Urchin will return something like this. But errors will be
 messy for now, and they'll be before the (Passed|Failed) line.

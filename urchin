@@ -69,21 +69,23 @@ runtests() {
 
 # Parameters
 test_dir=tests
-action=
+USAGE="usage: $0 [-cs] [test suites and test cases...]"
 
 while [ $# -gt 0 ]
 do
     case "$1" in
         -c) action=testcase;;
         -s) action=testsuite;;
-        --) shift; break;;
-        -*) echo >&2 \
-            "usage: $0 [-v] [-f file] [file ...]"
+        -z) action=currentshell;;
+#       --) shift; break;;
+        -*) echo >&2 $USAGE
             exit 1;;
         *)  break;;
     esac
     shift
 done
+
+[ -s $action ] || echo $USAGE
 
 # "$@" contains only names of test suites (directories)
 # or test cases (files)
