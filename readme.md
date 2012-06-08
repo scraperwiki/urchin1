@@ -55,7 +55,7 @@ These are run before and after the `runtests` function, respectively.
 Call urchin at the bottom of your script (after all those function
 definitions) like so.
 
-    urchin -c
+    urchin -z
 
 You can also call this on a file, outside of the script.
 

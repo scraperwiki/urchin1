@@ -31,9 +31,9 @@ assert() {
 
   if $passed; then
     tests_passing=$(($tests_passing+1))
-    echo "Passed: $msg"
+    echo "  Passed: $msg"
   else
-    echo "Failed: $msg"
+    echo "  Failed: $msg"
   fi
 }
 
@@ -42,8 +42,8 @@ report_test_results() {
   tests_total=$2
 
   echo Ran $tests_total tests
-  echo \ -\ $tests_passing successes
-  echo \ -\ $(($tests_total - $tests_passing)) failures
+  echo \ \ $tests_passing successes
+  echo \ \ $(($tests_total - $tests_passing)) failures
 
   [ $tests_total -eq $tests_passing ] || return 1
 }
