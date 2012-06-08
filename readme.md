@@ -80,7 +80,8 @@ or, to be more explicit
 
     urchin -s tests 
 
-Urchin will return something like this.
+Urchin will return something like this. But errors will be
+messy for now, and they'll be before the (Passed|Failed) line.
 
     Test case: create_bob
       Passed: /home/bob exists
