@@ -3,7 +3,11 @@ Urchin: A Skeleton for Shell Tests
 
 ## Install
 
-??
+Copy urchin to some place in your path
+
+    cp urchin ~/bin
+
+We'll have a proper .deb eventually.
 
 ## Overview
 

@@ -146,7 +146,7 @@ for test_thing in "$@"; do
           # Skip non-files
           [ -f $file ] || continue
  
-          fingerprint=$RANDOM
+          tmp=$(mktemp)
 
           echo Test Case: $file
           echo $H2
@@ -167,9 +167,9 @@ for test_thing in "$@"; do
             echo $H2
  
             # Pass the success rate back
-            echo "$tests_passing,$tests_total" > /tmp/urchin-$fingerprint
+            echo "$tests_passing,$tests_total" > $tmp
           )
-          counts="`cat /tmp/urchin-$fingerprint`"
+          counts="`cat $tmp`"
           testsuite_tests_passing=$(($testsuite_tests_passing+`echo $counts|cut -d ',' -f 1`))
           testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
         done
