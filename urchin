@@ -173,8 +173,11 @@ for test_thing in "$@"; do
             echo "$tests_passing,$tests_total" > $tmp
           )
           counts="`cat $tmp`"
-          testsuite_tests_passing=$(($testsuite_tests_passing+`echo $counts|cut -d ',' -f 1`))
-          testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
+          if [ ! -s $counts ]; then
+            testsuite_tests_passing=$(( $testsuite_tests_passing + `echo $counts|cut -d , -f 1` ))
+            testsuite_tests_total=$(($testsuite_tests_total+`echo $counts|cut -d ',' -f 2`))
+          fi
+
         done
  
         echo -n Test Suite Totals:\ 
