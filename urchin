@@ -27,7 +27,7 @@ assert() {
   tests_total=$(($tests_total+1))
 
   passed=false
-  `$assertion` && passed=true
+  $assertion && passed=true
 
   if $passed; then
     tests_passing=$(($tests_passing+1))

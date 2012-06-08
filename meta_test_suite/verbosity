@@ -1,0 +1,6 @@
+#!/bin/sh
+
+runtests() {
+  assert 'ps aux is a command, with quotes' 'command -v ps aux'
+  assert 'ps aux is a command, without quotes' command -v ps aux
+}
