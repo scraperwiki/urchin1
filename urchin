@@ -85,7 +85,8 @@ do
     shift
 done
 
-[ -s $action ] || echo $USAGE
+# Invalid input
+[ -s $action ] && echo $USAGE && exit 1
 
 # "$@" contains only names of test suites (directories)
 # or test cases (files)
