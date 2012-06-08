@@ -20,7 +20,7 @@ assert() {
   msg=$1
   shift 1
   assertion=$*
-  [ "$msg" = '' ] && msg="$assertion"
+  [ "$msg" = '' ] && msg=$assertion
   tests_total=$(($tests_total+1))
 
   passed=false

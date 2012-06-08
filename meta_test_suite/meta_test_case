@@ -2,19 +2,26 @@
 
 runtests() {
   # True
-  assert '[ "3" = "3" ]' [ "3" = "3" ]
-  assert '[ "3" != "three" ]' [ "3" != "three" ]
+  assert '' [ "3" = "3" ]
+  assert '' [ "3" != "three" ]
   assert 'The urchin script exists.' [ -e urchin ]
-  assert '' '! rmdir /'
+  rmdir_root_fails=false
+  ! (rmdir / > /dev/null 2>&1) && rmdir_root_fails=true
+  assert 'Cannot rmdir /' $rmdir_root_fails
+
+# Why doesn't this work?
+# assert '' '! rmdir /'
 
   # Errors
-  rmdir /
+# rmdir /
 
   # False
-  assert '[ "3" = "4" ]' [ "3" = "4" ]
-  assert '[ "three" != "three" ]' [ "three" != "three" ]
-  assert '[ -e not_a_file ]' [ -e not_a_file ]
-  assert 'rmdir /' 'rmdir /'
+  assert '' [ "3" = "4" ]
+  assert '' [ "three" != "three" ]
+  assert '' [ -e not_a_file ]
+  rmdir_root_succeeds=true
+  (rmdir / > /dev/null 2>&1) || rmdir_root_succeeds=false
+  assert 'Can rmdir /' $rmdir_root_succeeds
 
   # Error
 # assert '( rmdir / )' ( rmdir / )
