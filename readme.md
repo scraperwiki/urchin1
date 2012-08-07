@@ -11,8 +11,8 @@ We'll have a proper .deb eventually.
 
 ## Overview
 
-Urchin lets you write *assertions* to make *test cases*, which are
-organized into *test suites*.
+Urchin lets you write *assertions* inside of files (test cases), which you can
+organize into directories (test suites).
 
 A test case is a file, and a test suite is a directory of test cases.
 You can run a lone test case, but if you have several in one directory,
@@ -59,7 +59,7 @@ definitions) like so.
 
 You can also call this on a file, outside of the script.
 
-    urchin -c some_test_case_file
+    urchin some_test_case_file
 
 ## Test suites
 
@@ -78,7 +78,7 @@ set up a project like this
 
 and then go to the root of the project (`./`) and run this.
 
-    urchin -s ./tests 
+    urchin -r tests 
 
 Urchin will return something like this. But errors will be
 messy for now, and they'll be before the (Passed|Failed) line.
