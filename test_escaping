@@ -1,0 +1,3 @@
+runtests() {
+  assert 'An escaped space should equal a quoted space.' [ \  = ' ' ]
+}
