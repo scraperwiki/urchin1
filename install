@@ -1,0 +1,6 @@
+#!/bin/sh
+wget -O ~/bin/urchin https://raw.github.com/scraperwiki/urchin/master/urchin
+chmod +x ~/bin/urchin
+echo 'export PATH=${PATH}:~/bin' >> ~/.profile
+export PATH=${PATH}:~/bin
+
