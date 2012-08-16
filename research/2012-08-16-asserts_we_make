@@ -1,0 +1,25 @@
+tlevine@desk:~/Documents/swops-secret$ grep -R assert .
+./test_keys.sh:  assert '~/swops-secret exists (possibly as a symlink)' [ -e ~/swops-secret-keys.sh ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert '/etc/nginx/sites-available/boxes exists' \
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'box http root matcher matches /boxname/http' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'box http root matcher matches /boxname/http/' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'box http root matcher matches /boxname/http/something' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'ssl_certificate and ssl_certificate_key specified in config' \
+./lithium/class/boxecutor/hooks/test/nginx_configured:    assert "$a has been copied" [ -e "${CFG}/$a" ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'box http root matcher matches /boxname/http/something/' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'the nginx boxes config is enabled' \
+./lithium/class/boxecutor/hooks/test/nginx_configured:  assert 'the nginx default config is disabled'
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert "$daemon daemon is set to run on boot" [ $link_count = '6' ] && [ $unique_target_count = '1' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'dumptruck-web is checked out to /var/www/dumptruck-web' [ -d "${ROOT_DIR}"var/www/dumptruck-web/.git ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert "sqlite location should appear exactly once" [ '1' = "${how_many}" ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'SCRIPT_NAME should be dumptruck_web.py' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'DOCUMENT_ROOT should be /var/www/dumptruck-web/' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:# assert 'fastcgi_pass should be unix:/var/run/fcgiwrap.socket;' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'fcgiwrap daemon should spawn 20 processes.' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert "/etc/init.d/fcgiwrap uses the socket '/var/run/fcgiwrap.socket;'" [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert '/var/www/dumptruck-web/dumptruck_web.py exists' [ -f "${ROOT_DIR}"var/www/dumptruck-web/dumptruck_web.py ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'www-data can execute /var/www/dumptruck-web/dumptruck_web.py' [ "$?" = '0' ]
+./lithium/class/boxecutor/hooks/test/sqlite_api_configured:  assert 'www-data user and group owns dumptruck-web' [ "$?" = '0' ]
+./lithium/class/linode_custom_kernel/hooks/test/private_ip_added_to_interfaces_file:  assert 'private interface is brought up on boot' [ "$?" = '0' ]
+./lithium/class/linode_custom_kernel/hooks/test/private_ip_added_to_interfaces_file:  assert 'private virtual interface exists with ip' [ "$?" = '0' ]
+
