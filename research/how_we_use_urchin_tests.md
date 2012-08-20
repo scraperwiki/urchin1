@@ -24,3 +24,7 @@ The relevant files are in parentheses.
 * A non-executable configuration file (nginx configuration)
 * Executable configuration files (a few daemons)
 * A repository checkout (dumptruck-web)
+
+## Shell tests outside of Lithium
+I made some tests of the `[ "$?" = '0' ]` nature
+[for my git server](http://git.thomaslevine.com/treegit/tree/tests).
