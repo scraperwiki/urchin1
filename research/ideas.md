@@ -40,7 +40,7 @@ make the directory, rather than the file, the atomic unit of testness. Test
 suites, or whatever you call them, would just be recursive trees of files,
 where the names of the files have special meanings.
 
-    foo/
+    tests/
       setup
       bar/
         setup
@@ -69,3 +69,27 @@ Tertiarily, it makes fixtures easier to handle. Fixtures are annoying in shell
 tests because you don't know where the tests are running. In this case, let's
 make the tests run in their directory, and you can put the fixtures in that
 directory; maybe name them something like `fixture_foo_api_request`.
+
+## Updating configuration files
+Currently, we're haphazardly saving the configuration files in a configuration
+file directory or pasting them into the hook script. How about we just use
+standard packaging tools for this, so each setup script could be a standard
+package with maybe a tiny bit of configuration. If we were using slackware
+packages, we could do something like this.
+
+    project/
+      bin/
+        activate
+        deploy
+      tests/
+      pkg/
+        nginx-configuration/
+          etc/
+            nginx.conf
+            ...
+        linux/
+        glusterfs-configuration/
+
+I dunno whether this structure makes sense for Debian packages, but they surely
+have some convenient way of specifying this sort of thing. And then maybe we
+have some little helper in bin/deploy that installs these packages.
