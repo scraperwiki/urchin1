@@ -1,7 +1,7 @@
 Urchin: A Skeleton for Shell Tests
 =====
 
-http://urchin.sh
+http://www.urchin.sh
 
 ## Install
 
