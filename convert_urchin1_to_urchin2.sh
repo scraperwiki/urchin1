@@ -2,6 +2,8 @@
 
 # Run this on an urchin1 file to convert it to an urchin2 directory of the
 # same name; the urchin1 file will be renamed to "${name}.old".
+set -e
+[ "$#" != '1' ] && echo 'Specify a filename.' && exit 1
 
 old="$1"
 mv "$old" "$old".old
