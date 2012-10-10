@@ -1,6 +1,8 @@
 Urchin: A Skeleton for Shell Tests
 =====
 
+http://www.urchin.sh
+
 ## Install
 
 Copy urchin to some place in your path
