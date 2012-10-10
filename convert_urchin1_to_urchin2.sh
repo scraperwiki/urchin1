@@ -5,32 +5,32 @@
 set -e
 [ "$#" != '1' ] && echo 'Specify a filename.' && exit 1
 
-old="$1"
-mv "$old" "$old".old
-mkdir "$old"
+file="$1"
+mv "$file" "$old".old
+mkdir "$file".new
 
 # Setup function
-sed -n '1,/}/ p' "$old".old |
-  sed -e 's/setup *() *{//' > "$old/setup"
+sed -n '1,/}/ p' "$file".old |
+  sed -e 's/setup *() *{//' > "$file.new/setup"
 
 # Teardown function
-sed -n '/teardown()/,$ p' "$old".old |
-  sed -e 's/teardown *() *{//' > "$old/teardown"
+sed -n '/teardown()/,$ p' "$file".old |
+  sed -e 's/teardown *() *{//' > "$file.new/teardown"
 
 # Fake assert function
 assert() {
   filename=$(echo "$1"| tr -d \/ )
   shift
   filecontents="$*"
-  echo "$filecontents" > "$old/$filename"
+  echo "$filecontents" > "$file.new/$filename"
 }
 
 tmp=$(mktemp)
 # Other functions
 while
-    grep -m1 assert $old.old > $tmp
+    grep -m1 assert $file.old > $tmp
   do
     cat $tmp
     . $tmp
-    sed -i '0,/assert /assert/d' $old.old
+    sed -i '0,/assert/{/assert/d}' $file.old
 done
